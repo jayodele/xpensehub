@@ -5,17 +5,17 @@ from pathlib import Path
 from threading import Lock
 
 import numpy as np
-from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, File, Form, HTTPException, UploadFile
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
 from PIL import Image
 
 from processor import process_image, process_video
 
 app = FastAPI(title="ComicFX")
-templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+_INDEX_HTML = Path("templates/index.html")
 
 UPLOAD_DIR = Path("uploads")
 OUTPUT_DIR = Path("outputs")
@@ -32,8 +32,8 @@ jobs_lock = Lock()
 
 
 @app.get("/")
-async def index(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+async def index():
+    return HTMLResponse(_INDEX_HTML.read_text())
 
 
 @app.post("/upload")
