@@ -19,6 +19,66 @@
 
   <main>
 
+    <!-- Artist Techniques options panel -->
+    <section id="options-section">
+      <div class="panel">
+        <div class="panel-header">✏ ARTIST TECHNIQUES — Choose Your Style</div>
+        <div class="techniques-grid">
+
+          <!-- Probyn cross-hatching -->
+          <label class="technique-card" id="card-hatch">
+            <div class="technique-top">
+              <input type="checkbox" id="opt-crosshatch" checked />
+              <span class="technique-icon">✒</span>
+              <span class="technique-name">CROSS-HATCHING</span>
+            </div>
+            <p class="technique-book">Probyn — The Complete Drawing Book, 1970</p>
+            <p class="technique-desc">
+              Build shadow tone through directional ink marks: single 45° lines
+              in mid-shadows, cross-hatch in deep shadows. The same technique
+              used by pen-and-ink comic artists of the era.
+            </p>
+          </label>
+
+          <!-- Edwards variable contour -->
+          <label class="technique-card" id="card-contour">
+            <div class="technique-top">
+              <input type="checkbox" id="opt-contour" checked />
+              <span class="technique-icon">✍</span>
+              <span class="technique-name">VARIABLE CONTOUR</span>
+            </div>
+            <p class="technique-book">Edwards — Drawing on the Right Side of the Brain, 1979</p>
+            <p class="technique-desc">
+              Pure contour drawing with varying line weight: bold ink at form
+              overlaps and strong boundaries, hairlines at subtle surface
+              transitions — following exactly what the eye sees.
+            </p>
+          </label>
+
+          <!-- de Reyna value masses + palette slider -->
+          <div class="technique-card active" id="card-palette">
+            <div class="technique-top">
+              <span class="technique-icon">◑</span>
+              <span class="technique-name">VALUE MASSES</span>
+            </div>
+            <p class="technique-book">de Reyna — How to Draw What You See, 1970</p>
+            <p class="technique-desc">
+              Squint at the subject to see broad light/shadow masses instead of
+              detail. An S-curve boosts the contrast between zones before the
+              colour palette is reduced.
+            </p>
+            <div class="palette-control">
+              <span class="palette-min">4</span>
+              <input type="range" id="opt-colors" min="4" max="12" value="8" />
+              <span class="palette-max">12</span>
+              <span class="palette-label" id="palette-label">8 colours</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
     <!-- Upload panel -->
     <section id="upload-section">
       <div class="panel" id="upload-panel">
@@ -46,7 +106,7 @@
           </div>
           <span class="progress-pct" id="progress-pct">0%</span>
         </div>
-        <p class="progress-msg" id="progress-msg">Applying halftone dots &amp; comic outlines…</p>
+        <p class="progress-msg" id="progress-msg">Clarifying value masses…</p>
       </div>
     </section>
 
@@ -78,7 +138,7 @@
   </main>
 
   <footer>
-    <p>ComicFX — Powered by 1970s Vibes &amp; Modern Pixels</p>
+    <p>ComicFX — Techniques sourced from de Reyna (1970) · Probyn (1970) · Edwards (1979)</p>
   </footer>
 
   <script src="/static/app.js"></script>

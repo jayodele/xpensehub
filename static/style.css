@@ -21,7 +21,6 @@ body {
   font-family: var(--font-body);
   font-size: 1rem;
   background-color: #fff9c4;
-  /* CSS halftone dot pattern */
   background-image: radial-gradient(circle, rgba(0,0,0,.13) 1.4px, transparent 1.4px);
   background-size: 10px 10px;
   min-height: 100vh;
@@ -52,7 +51,6 @@ h1 {
   line-height: 1;
   color: var(--ink);
 }
-
 h1 span { color: var(--red); }
 
 .tagline {
@@ -65,8 +63,8 @@ h1 span { color: var(--red); }
 /* ── Main layout ─────────────────────────────────────────── */
 
 main {
-  max-width: 1100px;
-  margin: 40px auto;
+  max-width: 1140px;
+  margin: 36px auto;
   padding: 0 20px;
 }
 
@@ -81,34 +79,130 @@ main {
 
 .panel-header {
   font-family: var(--font-comic);
-  font-size: 1.35rem;
+  font-size: 1.3rem;
   letter-spacing: 2px;
   background: var(--ink);
   color: var(--yellow);
   padding: 8px 16px;
 }
 
+/* ── Artist Techniques panel ─────────────────────────────── */
+
+#options-section { margin-bottom: 24px; }
+
+.techniques-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.technique-card {
+  padding: 16px 18px;
+  border-right: 2px solid #ddd;
+  cursor: default;
+  transition: background .15s;
+  display: block; /* label element */
+}
+.technique-card:last-child { border-right: none; }
+
+/* Checkbox cards become clickable labels */
+label.technique-card { cursor: pointer; }
+
+label.technique-card:has(input:checked),
+.technique-card.active {
+  background: rgba(255, 109, 0, .07);
+}
+
+.technique-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.technique-top input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--orange);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.technique-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.technique-name {
+  font-family: var(--font-comic);
+  font-size: 1.05rem;
+  letter-spacing: 1.5px;
+  line-height: 1;
+}
+
+.technique-book {
+  font-size: .75rem;
+  color: #888;
+  font-style: italic;
+  margin-bottom: 6px;
+  padding-left: 2px;
+}
+
+.technique-desc {
+  font-size: .82rem;
+  color: #555;
+  line-height: 1.45;
+  margin-bottom: 10px;
+}
+
+.palette-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.palette-control input[type="range"] {
+  flex: 1;
+  accent-color: var(--orange);
+  cursor: pointer;
+}
+
+.palette-min, .palette-max {
+  font-size: .8rem;
+  color: #888;
+  min-width: 14px;
+}
+
+.palette-label {
+  font-family: var(--font-comic);
+  font-size: 1rem;
+  letter-spacing: 1px;
+  color: var(--orange);
+  min-width: 70px;
+  text-align: right;
+}
+
 /* ── Upload zone ─────────────────────────────────────────── */
 
-#upload-section { margin-bottom: 28px; }
+#upload-section { margin-bottom: 24px; }
 
 .upload-zone {
   margin: 20px;
-  padding: 56px 32px;
+  padding: 52px 32px;
   border: 4px dashed #aaa;
   border-radius: 4px;
   text-align: center;
   cursor: pointer;
   transition: border-color .15s, background .15s;
 }
-
 .upload-zone:hover,
 .upload-zone.over {
   border-color: var(--orange);
-  background: rgba(255,109,0,.06);
+  background: rgba(255,109,0,.05);
 }
 
-.upload-icon  { font-size: 3.8rem; margin-bottom: 14px; }
+.upload-icon  { font-size: 3.5rem; margin-bottom: 12px; }
 .upload-title {
   font-family: var(--font-comic);
   font-size: 2rem;
@@ -116,11 +210,11 @@ main {
   margin-bottom: 8px;
 }
 .upload-sub   { color: #666; margin-bottom: 8px; }
-.upload-formats { font-size: .85rem; color: #888; font-style: italic; }
+.upload-formats { font-size: .85rem; color: #999; font-style: italic; }
 
 /* ── Progress ────────────────────────────────────────────── */
 
-#progress-section { margin-bottom: 28px; }
+#progress-section { margin-bottom: 24px; }
 
 .progress-wrap {
   display: flex;
@@ -128,7 +222,6 @@ main {
   gap: 12px;
   margin: 20px;
 }
-
 .progress-track {
   flex: 1;
   height: 32px;
@@ -136,31 +229,28 @@ main {
   border: var(--border);
   overflow: hidden;
 }
-
 .progress-fill {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg, var(--orange), var(--deep-yellow));
   transition: width .4s ease;
 }
-
 .progress-pct {
   font-family: var(--font-comic);
   font-size: 1.3rem;
   min-width: 50px;
   text-align: right;
 }
-
 .progress-msg {
   font-family: var(--font-comic);
-  font-size: 1.05rem;
+  font-size: 1rem;
   letter-spacing: 1px;
   text-align: center;
   padding: 4px 20px 20px;
   animation: blink 1.4s ease-in-out infinite;
 }
 
-@keyframes blink { 0%,100% { opacity:1 } 50% { opacity:.4 } }
+@keyframes blink { 0%,100% { opacity:1 } 50% { opacity:.35 } }
 
 /* ── Results grid ────────────────────────────────────────── */
 
@@ -171,7 +261,6 @@ main {
   align-items: start;
   margin-bottom: 24px;
 }
-
 .result-panel { margin: 0; }
 
 .vs-badge {
@@ -191,7 +280,6 @@ main {
   align-items: center;
   justify-content: center;
 }
-
 .media-box img,
 .media-box video {
   max-width: 100%;
@@ -218,7 +306,6 @@ main {
   cursor: pointer;
   transition: transform .08s, box-shadow .08s;
 }
-
 .action-btn:hover  { transform: translate(-2px,-2px); box-shadow: 8px 8px 0 var(--ink); }
 .action-btn:active { transform: translate(3px,3px);  box-shadow: 3px 3px 0 var(--ink); }
 
@@ -231,7 +318,6 @@ main {
   color: var(--ink);
   box-shadow: var(--shadow);
 }
-
 .reset-btn {
   display: block;
   width: 100%;
@@ -250,8 +336,8 @@ footer {
   color: var(--yellow);
   text-align: center;
   font-family: var(--font-comic);
-  font-size: 1rem;
-  letter-spacing: 2px;
+  font-size: .9rem;
+  letter-spacing: 1.5px;
   border-top: 4px solid var(--orange);
 }
 
@@ -259,9 +345,12 @@ footer {
 
 .hidden { display: none !important; }
 
-@media (max-width: 680px) {
+@media (max-width: 760px) {
   h1 { font-size: 3rem; }
+  .techniques-grid { grid-template-columns: 1fr; }
+  .technique-card { border-right: none; border-bottom: 2px solid #ddd; }
+  .technique-card:last-child { border-bottom: none; }
   .results-grid { grid-template-columns: 1fr; }
   .vs-badge { display: none; }
-  .upload-zone { padding: 40px 20px; }
+  .upload-zone { padding: 36px 20px; }
 }

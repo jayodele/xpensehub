@@ -5,7 +5,7 @@ from pathlib import Path
 from threading import Lock
 
 import numpy as np
-from fastapi import FastAPI, File, HTTPException, Request, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -26,7 +26,7 @@ ALLOWED_IMAGE_EXT = {".jpg", ".jpeg", ".png", ".webp"}
 ALLOWED_VIDEO_EXT = {".mp4", ".mov", ".avi", ".mkv"}
 ALLOWED_EXT = ALLOWED_IMAGE_EXT | ALLOWED_VIDEO_EXT
 
-# job_id -> {"status": str, "progress": int, "output_path": str, "type": str, "error": str}
+# job_id -> {"status", "progress", "output_path", "type", "error"}
 jobs: dict[str, dict] = {}
 jobs_lock = Lock()
 
@@ -37,10 +37,18 @@ async def index(request: Request):
 
 
 @app.post("/upload")
-async def upload_file(file: UploadFile = File(...)):
+async def upload_file(
+    file: UploadFile = File(...),
+    cross_hatch: bool = Form(True),
+    variable_contour: bool = Form(True),
+    n_colors: int = Form(8),
+):
     suffix = Path(file.filename or "").suffix.lower()
     if suffix not in ALLOWED_EXT:
         raise HTTPException(status_code=400, detail=f"Unsupported file type: {suffix}")
+
+    n_colors = max(4, min(12, n_colors))  # clamp to safe range
+    opts = dict(cross_hatch=cross_hatch, variable_contour=variable_contour, n_colors=n_colors)
 
     is_video = suffix in ALLOWED_VIDEO_EXT
     job_id = str(uuid.uuid4())
@@ -48,37 +56,40 @@ async def upload_file(file: UploadFile = File(...)):
     output_suffix = ".mp4" if is_video else ".png"
     output_path = OUTPUT_DIR / f"{job_id}_comic{output_suffix}"
 
-    # Save uploaded bytes to disk
     content = await file.read()
     input_path.write_bytes(content)
 
     if is_video:
+        with jobs_lock:
+            jobs[job_id] = {
+                "status": "processing",
+                "progress": 0,
+                "output_path": str(output_path),
+                "type": "video",
+            }
+        threading.Thread(
+            target=_run_video_job,
+            args=(job_id, str(input_path), str(output_path), opts),
+        ).start()
+        return {"job_id": job_id, "type": "video", "status": "processing"}
+
+    # Image: process inline
+    with jobs_lock:
         jobs[job_id] = {
             "status": "processing",
             "progress": 0,
             "output_path": str(output_path),
-            "type": "video",
+            "type": "image",
         }
-        threading.Thread(
-            target=_run_video_job,
-            args=(job_id, str(input_path), str(output_path)),
-        ).start()
-        return {"job_id": job_id, "type": "video", "status": "processing"}
-
-    # Image: process inline (typically < 2 s)
-    jobs[job_id] = {
-        "status": "processing",
-        "progress": 0,
-        "output_path": str(output_path),
-        "type": "image",
-    }
     try:
         pil_img = Image.open(io.BytesIO(content)).convert("RGB")
-        result = process_image(np.array(pil_img))
+        result = process_image(np.array(pil_img), **opts)
         Image.fromarray(result).save(str(output_path))
-        jobs[job_id].update({"status": "done", "progress": 100})
+        with jobs_lock:
+            jobs[job_id].update({"status": "done", "progress": 100})
     except Exception as exc:
-        jobs[job_id].update({"status": "error", "error": str(exc)})
+        with jobs_lock:
+            jobs[job_id].update({"status": "error", "error": str(exc)})
         raise HTTPException(status_code=500, detail=str(exc))
 
     return {"job_id": job_id, "type": "image", "status": "done"}
@@ -109,13 +120,13 @@ async def download(job_id: str):
 # Background helper
 # ---------------------------------------------------------------------------
 
-def _run_video_job(job_id: str, input_path: str, output_path: str) -> None:
+def _run_video_job(job_id: str, input_path: str, output_path: str, opts: dict) -> None:
     try:
         def on_progress(pct: int) -> None:
             with jobs_lock:
                 jobs[job_id]["progress"] = pct
 
-        process_video(input_path, output_path, on_progress)
+        process_video(input_path, output_path, on_progress, **opts)
         with jobs_lock:
             jobs[job_id].update({"status": "done", "progress": 100})
     except Exception as exc:
