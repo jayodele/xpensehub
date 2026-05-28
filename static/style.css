@@ -1,0 +1,267 @@
+/* ============================================================
+   ComicFX — 1970s Comic Book UI
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #0d0d0d;
+  --yellow: #fff176;
+  --deep-yellow: #ffd600;
+  --orange: #ff6d00;
+  --red: #e53935;
+  --panel-bg: #fffde7;
+  --border: 3px solid var(--ink);
+  --shadow: 6px 6px 0 var(--ink);
+  --font-comic: 'Bangers', cursive;
+  --font-body: 'Comic Neue', cursive;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  background-color: #fff9c4;
+  /* CSS halftone dot pattern */
+  background-image: radial-gradient(circle, rgba(0,0,0,.13) 1.4px, transparent 1.4px);
+  background-size: 10px 10px;
+  min-height: 100vh;
+  color: var(--ink);
+}
+
+/* ── Header ──────────────────────────────────────────────── */
+
+header {
+  background: var(--orange);
+  border-bottom: 4px solid var(--ink);
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.title-box {
+  display: inline-block;
+  background: var(--yellow);
+  border: 4px solid var(--ink);
+  box-shadow: var(--shadow);
+  padding: 12px 36px;
+}
+
+h1 {
+  font-family: var(--font-comic);
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  letter-spacing: 6px;
+  line-height: 1;
+  color: var(--ink);
+}
+
+h1 span { color: var(--red); }
+
+.tagline {
+  font-family: var(--font-comic);
+  font-size: clamp(.9rem, 2.5vw, 1.25rem);
+  letter-spacing: 2px;
+  margin-top: 6px;
+}
+
+/* ── Main layout ─────────────────────────────────────────── */
+
+main {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+/* ── Panels ──────────────────────────────────────────────── */
+
+.panel {
+  background: var(--panel-bg);
+  border: var(--border);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.panel-header {
+  font-family: var(--font-comic);
+  font-size: 1.35rem;
+  letter-spacing: 2px;
+  background: var(--ink);
+  color: var(--yellow);
+  padding: 8px 16px;
+}
+
+/* ── Upload zone ─────────────────────────────────────────── */
+
+#upload-section { margin-bottom: 28px; }
+
+.upload-zone {
+  margin: 20px;
+  padding: 56px 32px;
+  border: 4px dashed #aaa;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+
+.upload-zone:hover,
+.upload-zone.over {
+  border-color: var(--orange);
+  background: rgba(255,109,0,.06);
+}
+
+.upload-icon  { font-size: 3.8rem; margin-bottom: 14px; }
+.upload-title {
+  font-family: var(--font-comic);
+  font-size: 2rem;
+  letter-spacing: 3px;
+  margin-bottom: 8px;
+}
+.upload-sub   { color: #666; margin-bottom: 8px; }
+.upload-formats { font-size: .85rem; color: #888; font-style: italic; }
+
+/* ── Progress ────────────────────────────────────────────── */
+
+#progress-section { margin-bottom: 28px; }
+
+.progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px;
+}
+
+.progress-track {
+  flex: 1;
+  height: 32px;
+  background: #e0e0e0;
+  border: var(--border);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--orange), var(--deep-yellow));
+  transition: width .4s ease;
+}
+
+.progress-pct {
+  font-family: var(--font-comic);
+  font-size: 1.3rem;
+  min-width: 50px;
+  text-align: right;
+}
+
+.progress-msg {
+  font-family: var(--font-comic);
+  font-size: 1.05rem;
+  letter-spacing: 1px;
+  text-align: center;
+  padding: 4px 20px 20px;
+  animation: blink 1.4s ease-in-out infinite;
+}
+
+@keyframes blink { 0%,100% { opacity:1 } 50% { opacity:.4 } }
+
+/* ── Results grid ────────────────────────────────────────── */
+
+.results-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 24px;
+}
+
+.result-panel { margin: 0; }
+
+.vs-badge {
+  font-family: var(--font-comic);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--ink);
+  align-self: center;
+  padding: 0 4px;
+  text-shadow: 2px 2px 0 var(--red);
+}
+
+.media-box {
+  padding: 16px;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.media-box img,
+.media-box video {
+  max-width: 100%;
+  max-height: 420px;
+  display: block;
+  border: 2px solid #ccc;
+}
+
+.spinner-text {
+  font-family: var(--font-comic);
+  font-size: 1.5rem;
+  letter-spacing: 3px;
+  color: #bbb;
+  animation: blink 1.4s ease-in-out infinite;
+}
+
+/* ── Buttons ─────────────────────────────────────────────── */
+
+.action-btn {
+  font-family: var(--font-comic);
+  font-size: 1.45rem;
+  letter-spacing: 3px;
+  border: var(--border);
+  cursor: pointer;
+  transition: transform .08s, box-shadow .08s;
+}
+
+.action-btn:hover  { transform: translate(-2px,-2px); box-shadow: 8px 8px 0 var(--ink); }
+.action-btn:active { transform: translate(3px,3px);  box-shadow: 3px 3px 0 var(--ink); }
+
+.download-btn {
+  display: block;
+  width: calc(100% - 32px);
+  margin: 0 16px 16px;
+  padding: 14px;
+  background: var(--deep-yellow);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}
+
+.reset-btn {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  background: var(--red);
+  color: #fff;
+  box-shadow: var(--shadow);
+}
+
+/* ── Footer ──────────────────────────────────────────────── */
+
+footer {
+  margin-top: 20px;
+  padding: 18px;
+  background: var(--ink);
+  color: var(--yellow);
+  text-align: center;
+  font-family: var(--font-comic);
+  font-size: 1rem;
+  letter-spacing: 2px;
+  border-top: 4px solid var(--orange);
+}
+
+/* ── Utilities ───────────────────────────────────────────── */
+
+.hidden { display: none !important; }
+
+@media (max-width: 680px) {
+  h1 { font-size: 3rem; }
+  .results-grid { grid-template-columns: 1fr; }
+  .vs-badge { display: none; }
+  .upload-zone { padding: 40px 20px; }
+}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ComicFX — 70s Comic Style Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+  <header>
+    <div class="title-box">
+      <h1>COMIC<span>FX</span></h1>
+      <p class="tagline">★ Transform Any Image or Video Into 1970s Comic Art! ★</p>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Upload panel -->
+    <section id="upload-section">
+      <div class="panel" id="upload-panel">
+        <div class="panel-header">DROP YOUR MEDIA HERE</div>
+        <div class="upload-zone" id="upload-zone">
+          <div class="upload-icon">🎨</div>
+          <p class="upload-title">DRAG &amp; DROP</p>
+          <p class="upload-sub">— or click to browse —</p>
+          <p class="upload-formats">
+            Images: JPG · PNG · WEBP &nbsp;|&nbsp; Videos: MP4 · MOV · AVI
+          </p>
+          <input type="file" id="file-input"
+                 accept=".jpg,.jpeg,.png,.webp,.mp4,.mov,.avi,.mkv" hidden />
+        </div>
+      </div>
+    </section>
+
+    <!-- Video progress -->
+    <section id="progress-section" class="hidden">
+      <div class="panel">
+        <div class="panel-header">⚙ PROCESSING VIDEO...</div>
+        <div class="progress-wrap">
+          <div class="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <span class="progress-pct" id="progress-pct">0%</span>
+        </div>
+        <p class="progress-msg" id="progress-msg">Applying halftone dots &amp; comic outlines…</p>
+      </div>
+    </section>
+
+    <!-- Results: side-by-side panels -->
+    <section id="results-section" class="hidden">
+      <div class="results-grid">
+
+        <div class="panel result-panel">
+          <div class="panel-header">ORIGINAL</div>
+          <div class="media-box" id="original-box"></div>
+        </div>
+
+        <div class="vs-badge">VS</div>
+
+        <div class="panel result-panel">
+          <div class="panel-header">★ COMIC STYLE ★</div>
+          <div class="media-box" id="result-box">
+            <p class="spinner-text" id="spinner">RENDERING…</p>
+          </div>
+          <button class="action-btn download-btn hidden" id="download-btn">
+            ⚡ DOWNLOAD ⚡
+          </button>
+        </div>
+
+      </div>
+      <button class="action-btn reset-btn" id="reset-btn">↩ TRY ANOTHER!</button>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>ComicFX — Powered by 1970s Vibes &amp; Modern Pixels</p>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
